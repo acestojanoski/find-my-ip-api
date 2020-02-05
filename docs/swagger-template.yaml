@@ -1,0 +1,77 @@
+openapi: 3.0.0
+
+info:
+    title: 'find-my-ip'
+    description: 'API to find your public ip address.'
+    version: 1.0.0
+
+servers:
+    - url: 'https://find-my-ip.herokuapp.com'
+      description: 'Production environment'
+    - url: 'http://localhost:3001'
+      description: 'Local environment'
+
+paths:
+    /api-operations:
+        get:
+            summary: 'Returns a list with all api operations.'
+            responses:
+                200:
+                    description: 'A JSON array with api operations'
+                    content:
+                        application/json:
+                            schema:
+                                type: 'array'
+                                items:
+                                    type: 'string'
+                500:
+                    description: 'Internal server error'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/errorSchema'
+    /ping:
+        get:
+            summary: 'Ping the service'
+            responses:
+                200:
+                    description: 'Returns message pong.'
+                    content:
+                        application/json:
+                            schema:
+                                type: 'object'
+                                properties:
+                                    message:
+                                        type: 'string'
+                                        default: 'pong'
+                500:
+                    description: 'Internal server error'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/errorSchema'
+    /:
+        get:
+            summary: 'Find my IP'
+            responses:
+                200:
+                    description: 'Returns the ip address'
+                    content:
+                        application/json:
+                            schema:
+                                type: 'object'
+                                properties:
+                                    ip:
+                                        type: 'string'
+                500:
+                    description: 'Internal server error'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/errorSchema'
+
+errorSchema:
+    type: 'object'
+    properties:
+        message:
+            type: 'string'
